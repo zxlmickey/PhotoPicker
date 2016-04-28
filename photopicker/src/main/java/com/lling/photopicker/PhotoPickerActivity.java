@@ -58,6 +58,8 @@ public class PhotoPickerActivity extends Activity implements PhotoAdapter.PhotoC
     public final static String EXTRA_SELECT_MODE = "select_mode";
     /** 最大选择数量 */
     public final static String EXTRA_MAX_MUN = "max_num";
+
+    public final static String EXTRA_SELECTED_LIST = "selected_list";
     /** 单选 */
     public final static int MODE_SINGLE = 0;
     /** 多选 */
@@ -138,10 +140,21 @@ public class PhotoPickerActivity extends Activity implements PhotoAdapter.PhotoC
             mCommitBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mSelectList.clear();
                     mSelectList.addAll(mPhotoAdapter.getmSelectedPhotos());
                     returnData();
                 }
             });
+        }
+    }
+
+    private void initSelected(){
+        if(getIntent().hasExtra(EXTRA_SELECTED_LIST)){
+            mSelectList = getIntent().getStringArrayListExtra(EXTRA_SELECTED_LIST);
+            if(mSelectList.size() < 1){
+                return;
+            }
+            mPhotoAdapter.setmSelectedPhotos(mSelectList);
         }
     }
 
@@ -157,6 +170,7 @@ public class PhotoPickerActivity extends Activity implements PhotoAdapter.PhotoC
         mPhotoAdapter.setSelectMode(mSelectMode);
         mPhotoAdapter.setMaxNum(mMaxNum);
         mPhotoAdapter.setPhotoClickCallBack(this);
+        initSelected();
         mGridView.setAdapter(mPhotoAdapter);
         Set<String> keys = mFloderMap.keySet();
         final List<PhotoFloder> floders = new ArrayList<PhotoFloder>();

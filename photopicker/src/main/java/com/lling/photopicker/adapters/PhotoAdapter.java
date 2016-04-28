@@ -117,6 +117,14 @@ public class PhotoAdapter extends BaseAdapter {
         return mSelectedPhotos;
     }
 
+    public void setmSelectedPhotos(List<String> photos) {
+        if(mSelectedPhotos == null){
+            mSelectedPhotos = new ArrayList<>();
+        }
+        mSelectedPhotos.clear();
+        mSelectedPhotos.addAll(photos);
+    }
+
     public void setSelectMode(int selectMode) {
         this.mSelectMode = selectMode;
         if(mSelectMode == PhotoPickerActivity.MODE_MULTI) {
@@ -128,7 +136,9 @@ public class PhotoAdapter extends BaseAdapter {
      * 初始化多选模式所需要的参数
      */
     private void initMultiMode() {
-        mSelectedPhotos = new ArrayList<String>();
+        if(mSelectedPhotos == null){
+            mSelectedPhotos = new ArrayList<String>();
+        }
         mOnPhotoClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
